@@ -60,6 +60,7 @@ int labelset_new(unsigned char* labelset, unsigned long* labelset_len, const uns
   if (labelset == NULL || labelset_maxlen < 3 + protocol_name_len + customization_label_len)
     return -1;
 
+  *labelset_len = 0;
   bufptr = labelset;
   *bufptr++ = 2;
   *bufptr++ = protocol_name_len;
