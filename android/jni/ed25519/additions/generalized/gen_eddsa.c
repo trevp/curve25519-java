@@ -229,7 +229,18 @@ int generalized_eddsa_25519_sign(
   unsigned char s_scalar[SCALARLEN];
   unsigned char* M_buf = NULL;
 
+  if (signature_out == NULL)
+    goto err;
   memset(signature_out, 0, SIGNATURELEN);
+
+  if (eddsa_25519_pubkey_bytes == NULL)
+    goto err;
+  if (eddsa_25519_private_scalar == NULL)
+    goto err;
+  if (msg == NULL)
+    goto err;
+  if (customization_label == NULL && customization_label_len != 0)
+    goto err;
 
   if ((M_buf = malloc(msg_len + MSTART)) == 0)
     goto err;
@@ -281,6 +292,15 @@ int generalized_eddsa_25519_verify(
   unsigned char h_scalar[SCALARLEN];
   unsigned char* M_buf = NULL;
   unsigned char R_calc_bytes[POINTLEN];
+
+  if (signature == NULL)
+    goto err;
+  if (eddsa_25519_pubkey_bytes == NULL)
+    goto err;
+  if (msg == NULL)
+    goto err;
+  if (customization_label == NULL && customization_label_len != 0)
+    goto err;
 
   if ((M_buf = malloc(msg_len + MSTART)) == 0)
     goto err;

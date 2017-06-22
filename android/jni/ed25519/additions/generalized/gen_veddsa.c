@@ -105,7 +105,18 @@ int generalized_veddsa_25519_sign(
   unsigned char* M_buf = NULL;
   char* protocol_name = "VEdDSA_25519_SHA512_Elligator2";
 
+  if (signature_out == NULL)
+    goto err;
   memset(signature_out, 0, VRFSIGNATURELEN);
+
+  if (eddsa_25519_pubkey_bytes == NULL)
+    goto err;
+  if (eddsa_25519_private_scalar == NULL)
+    goto err;
+  if (msg == NULL)
+    goto err;
+  if (customization_label == NULL && customization_label_len != 0)
+    goto err;
 
   if ((M_buf = malloc(msg_len + MSTART)) == 0) {
     goto err;
@@ -199,6 +210,19 @@ int generalized_veddsa_25519_verify(
   unsigned char extra[3*POINTLEN];
   unsigned char* M_buf = NULL;
   char* protocol_name = "VEdDSA_25519_SHA512_Elligator2";
+
+  if (vrf_out == NULL)
+    goto err;
+  memset(vrf_out, 0, VRFSIGNATURELEN);
+
+  if (signature == NULL)
+    goto err;
+  if (eddsa_25519_pubkey_bytes == NULL)
+    goto err;
+  if (msg == NULL)
+    goto err;
+  if (customization_label == NULL && customization_label_len != 0)
+    goto err;
 
   if ((M_buf = malloc(msg_len + MSTART)) == 0) {
     goto err;
