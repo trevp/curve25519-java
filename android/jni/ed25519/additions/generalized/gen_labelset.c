@@ -77,13 +77,27 @@ int labelset_new(unsigned char* labelset, unsigned long* labelset_len, const uns
 int labelset_add(unsigned char* labelset, unsigned long* labelset_len, const unsigned long labelset_maxlen,
               const unsigned char* label, const unsigned char label_len)
 {
-  if (*labelset_len + label_len > labelset_maxlen)
+  unsigned char* bufptr;
+  if (labelset_len == NULL)
     return -1;
-  if (*labelset_len < 1 || labelset_maxlen < 1 || label_len < 1)
+  if (*labelset_len > LABELSETMAXLEN || labelset_maxlen > LABELSETMAXLEN)
     return -1;
+  if (*labelset_len >= labelset_maxlen || *labelset_len + label_len + 1 > labelset_maxlen)
+    return -1;
+  if (*labelset_len < 3 || labelset_maxlen < 4)
+    return -1;
+
   labelset[0]++;
   labelset[*labelset_len] = label_len;
-  memcpy(labelset + *labelset_len + 1, label, label_len); 
+  bufptr = labelset + *labelset_len + 1;
+  bufptr = buffer_add(bufptr, labelset + labelset_maxlen, label, label_len);
+  if (bufptr == NULL)
+    return -1;
+  if (bufptr - labelset >= labelset_maxlen)
+    return -1;
+  if (bufptr - labelset != *labelset_len + 1 + label_len)
+    return -1;
+
   *labelset_len += (1 + label_len);
   return 0;
 }
@@ -96,7 +110,7 @@ int labelset_validate(const unsigned char* labelset, const unsigned long labelse
 
   if (labelset == NULL)
     return -1;
-  if (labelset_len < 3)
+  if (labelset_len < 3 || labelset_len > LABELSETMAXLEN)
     return -1;
 
   num_labels = labelset[0];

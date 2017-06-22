@@ -17,6 +17,7 @@ static int generalized_calculate_Bv(ge_p3* Bv_point,
                               const unsigned char* K_bytes,
                               unsigned char* M_buf, const unsigned long M_start, const unsigned long M_len)
 {
+  unsigned char* bufptr;
   unsigned long prefix_len = 0;
 
   if (labelset_validate(labelset, labelset_len) != 0)
@@ -28,9 +29,13 @@ static int generalized_calculate_Bv(ge_p3* Bv_point,
   if (prefix_len > M_start)
     return -1;
 
-  memcpy(M_buf + M_start - prefix_len, B_bytes, POINTLEN);
-  memcpy(M_buf + M_start - prefix_len + POINTLEN, labelset, labelset_len);
-  memcpy(M_buf + M_start - prefix_len + POINTLEN + labelset_len, K_bytes, POINTLEN);
+  bufptr = M_buf + M_start - prefix_len;
+  bufptr = buffer_add(bufptr, M_buf + M_start, B_bytes, POINTLEN);
+  bufptr = buffer_add(bufptr, M_buf + M_start, labelset, labelset_len);
+  bufptr = buffer_add(bufptr, M_buf + M_start, K_bytes, POINTLEN);
+  if (bufptr == NULL || bufptr != M_buf + M_start)
+    return -1;
+
   hash_to_point(Bv_point, M_buf + M_start - prefix_len, prefix_len + M_len);
   if (ge_isneutral(Bv_point))
     return -1;
@@ -52,6 +57,8 @@ static int generalized_calculate_vrf_output(unsigned char* vrf_output,
   if (labelset_validate(labelset, labelset_len) != 0)
     return -1;
   if (vrf_output == NULL || cKv_point == NULL)
+    return -1;
+  if (VRFOUTPUTLEN > HASHLEN)
     return -1;
 
   ge_p3_tobytes(cKv_bytes, cKv_point);
