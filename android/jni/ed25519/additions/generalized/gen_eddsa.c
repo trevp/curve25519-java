@@ -106,6 +106,10 @@ int generalized_challenge(unsigned char* h_scalar,
   unsigned char* bufend = NULL;
   unsigned long prefix_len = 0;
 
+  if (h_scalar == NULL)
+    goto err;
+  memset(h_scalar, 0, HASHLEN);
+
   if (labelset_validate(labelset, labelset_len) != 0)
     goto err;
   if (h_scalar == NULL || R_bytes == NULL || K_bytes == NULL || M_buf == NULL)

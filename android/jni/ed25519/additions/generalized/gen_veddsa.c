@@ -52,11 +52,15 @@ static int generalized_calculate_vrf_output(unsigned char* vrf_output,
   unsigned char cKv_bytes[POINTLEN];
   unsigned char hash[HASHLEN];
 
+  if (vrf_output == NULL)
+    return -1;
+  memset(vrf_output, 0, VRFOUTPUTLEN);
+
   if (labelset_len + 2*POINTLEN > BUFLEN)
     return -1;
   if (labelset_validate(labelset, labelset_len) != 0)
     return -1;
-  if (vrf_output == NULL || cKv_point == NULL)
+  if (cKv_point == NULL)
     return -1;
   if (VRFOUTPUTLEN > HASHLEN)
     return -1;
