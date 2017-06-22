@@ -69,6 +69,10 @@ int labelset_new(unsigned char* labelset, unsigned long* labelset_len, const uns
     return -1;
   if (customization_label == NULL && customization_label_len != 0)
     return -1;
+  if (protocol_name_len > LABELMAXLEN)
+    return -1;
+  if (customization_label_len > LABELMAXLEN)
+    return -1;
 
   bufptr = labelset;
   *bufptr++ = 2;
@@ -99,6 +103,8 @@ int labelset_add(unsigned char* labelset, unsigned long* labelset_len, const uns
     return -1;
   if (*labelset_len < 3 || labelset_maxlen < 4)
     return -1;
+  if (label_len > LABELMAXLEN)
+    return -1;
 
   labelset[0]++;
   labelset[*labelset_len] = label_len;
@@ -120,6 +126,7 @@ int labelset_validate(const unsigned char* labelset, const unsigned long labelse
   unsigned char num_labels = 0;
   unsigned char count = 0;
   unsigned long offset = 0;
+  unsigned char label_len = 0;
 
   if (labelset == NULL)
     return -1;
@@ -129,7 +136,10 @@ int labelset_validate(const unsigned char* labelset, const unsigned long labelse
   num_labels = labelset[0];
   offset = 1;
   for (count = 0; count < num_labels; count++) {
-    offset += 1 + labelset[offset]; 
+    label_len = labelset[offset];
+    if (label_len > LABELMAXLEN)
+      return -1;
+    offset += 1 + label_len;
     if (offset > labelset_len)
       return -1;
   }

@@ -247,6 +247,8 @@ int generalized_eddsa_25519_sign(
     goto err;
   if (customization_label == NULL && customization_label_len != 0)
     goto err;
+  if (customization_label_len > LABELMAXLEN)
+    goto err;
 
   if ((M_buf = malloc(msg_len + MSTART)) == 0)
     goto err;
@@ -306,6 +308,8 @@ int generalized_eddsa_25519_verify(
   if (msg == NULL)
     goto err;
   if (customization_label == NULL && customization_label_len != 0)
+    goto err;
+  if (customization_label_len > LABELMAXLEN)
     goto err;
 
   if ((M_buf = malloc(msg_len + MSTART)) == 0)

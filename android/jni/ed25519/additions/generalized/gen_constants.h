@@ -1,7 +1,8 @@
 #ifndef _GEN_CONSTANTS_H__
 #define _GEN_CONSTANTS_H__
 
-#define LABELSETMAXLEN 256
+#define LABELSETMAXLEN 512
+#define LABELMAXLEN 128
 #define BUFLEN 1024
 #define BLOCKLEN 128 /* SHA512 */
 #define HASHLEN 64   /* SHA512 */
