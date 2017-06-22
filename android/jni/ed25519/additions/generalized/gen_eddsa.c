@@ -112,7 +112,7 @@ int generalized_challenge(unsigned char* h_scalar,
 
   if (labelset_validate(labelset, labelset_len) != 0)
     goto err;
-  if (h_scalar == NULL || R_bytes == NULL || K_bytes == NULL || M_buf == NULL)
+  if (R_bytes == NULL || K_bytes == NULL || M_buf == NULL)
     goto err;
   if (labelset == NULL && labelset_len != 0)
     goto err;
