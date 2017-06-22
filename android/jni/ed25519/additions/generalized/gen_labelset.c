@@ -68,6 +68,7 @@ int labelset_new(unsigned char* labelset, unsigned long* labelset_len, const uns
     *bufptr++ = customization_label_len;
   bufptr = buffer_add(bufptr, labelset + labelset_maxlen, 
                       customization_label, customization_label_len);
+
   if (bufptr != NULL && bufptr - labelset == 3 + protocol_name_len + customization_label_len) {
     *labelset_len = bufptr - labelset;
     return 0;
