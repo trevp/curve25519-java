@@ -111,7 +111,7 @@ int generalized_veddsa_25519_sign(
 
   if (eddsa_25519_pubkey_bytes == NULL)
     goto err;
-  if (eddsa_25519_private_scalar == NULL)
+  if (eddsa_25519_privkey_scalar == NULL)
     goto err;
   if (msg == NULL)
     goto err;

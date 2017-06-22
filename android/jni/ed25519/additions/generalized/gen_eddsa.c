@@ -41,9 +41,11 @@ int generalized_commit(unsigned char* R_bytes, unsigned char* r_scalar,
       K_bytes == NULL || k_scalar == NULL || 
       Z == NULL || M_buf == NULL)
     goto err;
-  if (labelset == NULL && labelset_len != 0)
-    goto err;
   if (extra == NULL && extra_len != 0)
+    goto err;
+  if (extra != NULL && extra_len == 0)
+    goto err;
+  if (extra != NULL && labelset_is_empty(labelset, labelset_len))
     goto err;
   if (HASHLEN != 64)
     goto err;
@@ -114,9 +116,11 @@ int generalized_challenge(unsigned char* h_scalar,
     goto err;
   if (R_bytes == NULL || K_bytes == NULL || M_buf == NULL)
     goto err;
-  if (labelset == NULL && labelset_len != 0)
-    goto err;
   if (extra == NULL && extra_len != 0)
+    goto err;
+  if (extra != NULL && extra_len == 0)
+    goto err;
+  if (extra != NULL && labelset_is_empty(labelset, labelset_len))
     goto err;
   if (HASHLEN != 64)
     goto err;
@@ -235,7 +239,7 @@ int generalized_eddsa_25519_sign(
 
   if (eddsa_25519_pubkey_bytes == NULL)
     goto err;
-  if (eddsa_25519_private_scalar == NULL)
+  if (eddsa_25519_privkey_scalar == NULL)
     goto err;
   if (msg == NULL)
     goto err;
