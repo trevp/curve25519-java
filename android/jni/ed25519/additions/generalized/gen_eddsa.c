@@ -128,6 +128,8 @@ int generalized_challenge(unsigned char* h_scalar,
   if (labelset_is_empty(labelset, labelset_len)) {
     if (2*POINTLEN > M_start)
       goto err;
+    if (extra != NULL || extra_len != 0)
+      goto err;
     memcpy(M_buf + M_start - (2*POINTLEN),  R_bytes, POINTLEN);
     memcpy(M_buf + M_start - (1*POINTLEN),  K_bytes, POINTLEN);
     prefix_len = 2*POINTLEN;
