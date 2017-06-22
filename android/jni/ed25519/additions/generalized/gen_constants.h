@@ -13,6 +13,7 @@
 #define VRFSIGNATURELEN 96
 #define VRFOUTPUTLEN 32
 #define MSTART 1024
+#define MSGMAXLEN 1048576
 
 #endif
 
