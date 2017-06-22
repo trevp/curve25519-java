@@ -55,6 +55,8 @@ int labelset_new(unsigned char* labelset, unsigned long* labelset_len, const uns
                  const unsigned char* customization_label, const unsigned char customization_label_len)
 {
   unsigned char* bufptr;
+  if (labelset_maxlen > LABELSETMAXLEN)
+    return -1;
   if (labelset == NULL || labelset_maxlen < 3 + protocol_name_len + customization_label_len)
     return -1;
 
@@ -66,7 +68,7 @@ int labelset_new(unsigned char* labelset, unsigned long* labelset_len, const uns
     *bufptr++ = customization_label_len;
   bufptr = buffer_add(bufptr, labelset + labelset_maxlen, 
                       customization_label, customization_label_len);
-  if (bufptr != NULL) {
+  if (bufptr != NULL && bufptr - labelset == 3 + protocol_name_len + customization_label_len) {
     *labelset_len = bufptr - labelset;
     return 0;
   }
