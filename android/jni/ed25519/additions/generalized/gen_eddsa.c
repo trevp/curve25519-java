@@ -110,7 +110,7 @@ int generalized_challenge(unsigned char* h_scalar,
 
   if (h_scalar == NULL)
     goto err;
-  memset(h_scalar, 0, HASHLEN);
+  memset(h_scalar, 0, SCALARLEN);
 
   if (labelset_validate(labelset, labelset_len) != 0)
     goto err;

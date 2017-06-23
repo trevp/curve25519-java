@@ -354,6 +354,7 @@ int generalized_xveddsa_fast_test(int silent)
 int all_fast_tests(int silent)
 {
   int result;
+
   if ((result = sha512_fast_test(silent)) != 0)
     return -1;
   if ((result = strict_fast_test(silent)) != 0)

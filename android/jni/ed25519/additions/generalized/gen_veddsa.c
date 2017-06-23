@@ -217,7 +217,7 @@ int generalized_veddsa_25519_verify(
 
   if (vrf_out == NULL)
     goto err;
-  memset(vrf_out, 0, VRFSIGNATURELEN);
+  memset(vrf_out, 0, VRFOUTPUTLEN);
 
   if (signature == NULL)
     goto err;
